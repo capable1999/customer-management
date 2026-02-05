@@ -35,26 +35,6 @@ database integration.
 
 ------------------------------------------------------------------------
 
-# 📂 Project Structure
-
-    customer-management
-    │
-    ├── controller
-    │   └── CustomerController
-    ├── service
-    │   └── CustomerService
-    ├── repository
-    │   └── CustomerRepository
-    ├── entity
-    │   └── Customer
-    ├── dto
-    │   └── CustomerDTO
-    ├── templates
-    │   └── customers.html
-    └── application.properties
-
-------------------------------------------------------------------------
-
 # ⚙️ Prerequisites
 
 -   Java 21+
@@ -171,7 +151,7 @@ Click Delete → Confirm
 
 ## Search Customer
 
-Enter keyword → Click Search
+Enter keyword → Click Search → Searched name appeared successfully
 
 <p float="left">
   <img src="screenshots/Search1.png" width="500" />
