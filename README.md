@@ -124,7 +124,7 @@ Change username and password based on your username and password of mysql. If cu
 ``` properties
 spring.datasource.url=jdbc:mysql://localhost:3306/customer_db?useSSL=false&serverTimezone=UTC
 spring.datasource.username=ikmal
-spring.datasource.password=123456
+spring.datasource.password=56789
 ```
 
 
