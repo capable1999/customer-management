@@ -128,6 +128,8 @@ Fill the form → Click Add Customer → Record Added Successfully
 
 Fill the form → Click Update Customer → Record Updated Successfully
 
+Note : Click cancel to cancel the editing and it automatically redirect to the Add Customer interface.
+
 <p float="left">
   <img src="screenshots/Edit1.png" width="500" />
   <img src="screenshots/Edit2.png" width="500" />
@@ -162,6 +164,6 @@ Enter keyword → Click Search → Searched name appeared successfully
 ---
 
 ## Pagination
-Next page only appear after more than 10 customer record stored successfully.
-Use Previous/Next buttons to navigate pages.
+Next interface only appear after more than 10 customer record stored successfully.
+Use Previous/Next buttons to navigate interfaces.
 
