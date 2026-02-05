@@ -57,7 +57,7 @@ If using XAMPP/WAMP:
 ## Clone the project
 
 ```bash
-git clone https://github.com/your-username/your-repo.git
+git clone https://github.com/capable1999/customer-management.git
 ```
 ------------------------------------------------------------------------
 
