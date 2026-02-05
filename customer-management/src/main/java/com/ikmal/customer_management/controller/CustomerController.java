@@ -1,15 +1,16 @@
 package com.ikmal.customer_management.controller;
 
-import com.ikmal.customer_management.entity.Customer;
+import com.ikmal.customer_management.dto.CustomerDTO;
 import com.ikmal.customer_management.service.CustomerService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/customers")
@@ -21,6 +22,7 @@ public class CustomerController {
         this.service = service;
     }
 
+    // List customers with pagination & search
     @GetMapping
     public String listCustomers(
             @RequestParam(defaultValue = "0") int page,
@@ -29,7 +31,7 @@ public class CustomerController {
             Model model
     ) {
         PageRequest pageRequest = PageRequest.of(page, 10, Sort.by(sortBy));
-        Page<Customer> customerPage;
+        Page<CustomerDTO> customerPage;
 
         if (keyword.isEmpty()) {
             customerPage = service.findPaginated(pageRequest);
@@ -38,53 +40,72 @@ public class CustomerController {
         }
 
         model.addAttribute("customerPage", customerPage);
-        model.addAttribute("customer", new Customer());
+        model.addAttribute("customer", new CustomerDTO()); // new customer form
         model.addAttribute("keyword", keyword);
         model.addAttribute("sortBy", sortBy);
 
         return "customers";
     }
 
+    // Add or Update Customer
     @PostMapping
     public String saveOrUpdateCustomer(
-        @Valid @ModelAttribute Customer customer,
-        BindingResult result,
-        @RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "") String keyword,
-        Model model) {
+            @Valid @ModelAttribute CustomerDTO customer,
+            BindingResult result,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "") String keyword,
+            Model model,
+            RedirectAttributes redirectAttrs
+    ) {
 
-    if (result.hasErrors()) {
-        Page<Customer> customerPage = service.findPaginated(PageRequest.of(page, 10));
-        model.addAttribute("customerPage", customerPage);
-        model.addAttribute("keyword", keyword);
-        return "customers";
+        // If validation errors, show form again with all required model attributes
+        if (result.hasErrors()) {
+            Page<CustomerDTO> customerPage = service.findPaginated(PageRequest.of(page, 10));
+            model.addAttribute("customerPage", customerPage);
+            model.addAttribute("keyword", keyword);
+            model.addAttribute("customer", customer); // keep user input
+            return "customers";
+        }
+
+        // Update existing customer
+        if (customer.getId() != null) {
+            CustomerDTO existing = service.getCustomerById(customer.getId());
+            existing.setName(customer.getName());
+            existing.setEmail(customer.getEmail());
+            existing.setPhone(customer.getPhone());
+            service.saveCustomer(existing);
+            redirectAttrs.addFlashAttribute("successMessage", "Customer updated successfully!");
+        } else {
+            // Add new customer
+            service.saveCustomer(customer);
+            redirectAttrs.addFlashAttribute("successMessage", "Customer added successfully!");
+        }
+
+        return "redirect:/customers?keyword=" + keyword + "&page=" + page;
     }
 
-    if (customer.getId() != null) {
-        Customer existing = service.getCustomerById(customer.getId());
-        existing.setName(customer.getName());
-        existing.setEmail(customer.getEmail());
-        existing.setPhone(customer.getPhone());
-        service.saveCustomer(existing);
-    } else {
-        service.saveCustomer(customer);
-    }
-
-    return "redirect:/customers?keyword=" + keyword + "&page=" + page;
-    }
-
+    // Edit customer
     @GetMapping("/edit/{id}")
-    public String editCustomer(@PathVariable Long id, Model model) {
-        Page<Customer> customerPage = service.findPaginated(PageRequest.of(0, 10));
+    public String editCustomer(@PathVariable Long id,
+                               @RequestParam(defaultValue = "0") int page,
+                               @RequestParam(defaultValue = "") String keyword,
+                               Model model) {
+        Page<CustomerDTO> customerPage = service.findPaginated(PageRequest.of(page, 10));
         model.addAttribute("customerPage", customerPage);
-        model.addAttribute("customer", service.getCustomerById(id));
-        model.addAttribute("keyword", "");
+        model.addAttribute("customer", service.getCustomerById(id)); // pre-fill form
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("page", page);
         return "customers";
     }
 
+    // Delete customer
     @GetMapping("/delete/{id}")
-    public String deleteCustomer(@PathVariable Long id) {
+    public String deleteCustomer(@PathVariable Long id,
+                                 @RequestParam(defaultValue = "0") int page,
+                                 @RequestParam(defaultValue = "") String keyword,
+                                 RedirectAttributes redirectAttrs) {
         service.deleteCustomer(id);
-        return "redirect:/customers";
+        redirectAttrs.addFlashAttribute("successMessage", "Customer deleted successfully!");
+        return "redirect:/customers?keyword=" + keyword + "&page=" + page;
     }
 }
