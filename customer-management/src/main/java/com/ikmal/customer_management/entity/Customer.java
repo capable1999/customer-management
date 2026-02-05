@@ -1,8 +1,10 @@
 package com.ikmal.customer_management.entity;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import java.util.Objects;
 
 @Entity
 @Table(name = "customers")
@@ -13,17 +15,20 @@ public class Customer {
     private Long id;
 
     @NotBlank(message = "Name is required")
+    @Column(name = "name", nullable = false)
     private String name;
 
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @NotBlank(message = "Phone is required")
-    @Pattern(regexp="^\\+?[0-9]{7,15}$", message="Invalid phone number")
+    @Pattern(regexp = "^\\+?[0-9]{7,15}$", message = "Invalid phone number")
+    @Column(name = "phone", nullable = false)
     private String phone;
 
-    // Constructors
+
     public Customer() {}
 
     public Customer(String name, String email, String phone) {
@@ -32,7 +37,6 @@ public class Customer {
         this.phone = phone;
     }
 
-    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -44,5 +48,27 @@ public class Customer {
 
     public String getPhone() { return phone; }
     public void setPhone(String phone) { this.phone = phone; }
-}
 
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Customer)) return false;
+        Customer customer = (Customer) o;
+        return id != null && id.equals(customer.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+}
