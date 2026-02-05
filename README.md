@@ -25,7 +25,7 @@ database integration.
 
 # 🛠 Tech Stack
 
--   **Java 17**
+-   **Java 21**
 -   **Spring Boot**
 -   **Spring Data JPA**
 -   **Thymeleaf**
@@ -89,13 +89,14 @@ spring.datasource.url=jdbc:mysql://localhost:3306/customer_db?useSSL=false&serve
 spring.datasource.username=customer_user
 spring.datasource.password=password
 ```
+Change username and password based on your username and password of mysql.
 
 ### JPA
 
 ``` properties
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
-spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 ```
 
 ### Thymeleaf
@@ -108,45 +109,81 @@ spring.thymeleaf.cache=false
 
 # ▶️ How to Run
 
-## Using IDE
-
-1.  Open project\
-2.  Run `CustomerManagementApplication`\
-3.  Visit:
-
-```{=html}
-<!-- -->
-```
-    http://localhost:8080/customers
+## Using IDE (VS Code)
+Wait until all dependencies successfully installed.
 
 ## Using Terminal
 
 ``` bash
 mvn clean install
-cd customer-management
 mvn spring-boot:run
 ```
+## Visit the browser
+
+http://localhost:8080/customers
 
 ------------------------------------------------------------------------
 
 # 📖 Usage
+## Start Page
 
-Add          
+No data at all
 
-Fill form → Add
+<p float="left">
+  <img src="screenshots/home.png" width="500" />
+</p>
 
-Edit         
+## Add Customer Record
 
-Edit → Save
+Fill the form → Click Add Customer → Record Added Successfully
 
-Delete       
+<p float="left">
+  <img src="screenshots/Add1.png" width="500" />
+  <img src="screenshots/Add2.png" width="500" />
+</p>
 
-Delete → Confirm
+---
 
-Search       
+## Edit Customer Record
 
-Enter keyword
+Fill the form → Click Update Customer → Record Updated Successfully
 
-Pagination   
+<p float="left">
+  <img src="screenshots/Edit1.png" width="500" />
+  <img src="screenshots/Edit2.png" width="500" />
+  <img src="screenshots/Edit3.png" width="500" />
+  <img src="screenshots/Edit4.png" width="500" />
+</p>
+
+---
+
+## Delete Customer
+
+Click Delete → Confirm
+
+<p float="left">
+  <img src="screenshots/Delete1.png" width="500" />
+  <img src="screenshots/Delete2.png" width="500" />
+  <img src="screenshots/Delete3.png" width="500" />
+</p>
+
+---
+
+## Search Customer
+
+Enter keyword → Click Search
+
+<p float="left">
+  <img src="screenshots/Search1.png" width="500" />
+  <img src="screenshots/Search2.png" width="500" />
+  <img src="screenshots/Search3.png" width="500" />  
+</p>
+
+---
+
+## Pagination
+Next page only appear after more than 10 customer record stored successfully.
+Use Previous/Next buttons to navigate pages.
+
 
 Previous/Next
