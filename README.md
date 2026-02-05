@@ -3,9 +3,7 @@
 A simple **Spring Boot Customer Management System** that supports full
 CRUD operations, search, and pagination with a clean Bootstrap UI.
 
-This project demonstrates good backend structure using
-**Controller--Service--Repository pattern**, DTO usage, validation, and
-database integration.
+This is for the short practical test purpose only.
 
 ------------------------------------------------------------------------
 
