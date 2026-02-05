@@ -165,5 +165,3 @@ Enter keyword → Click Search → Searched name appeared successfully
 Next page only appear after more than 10 customer record stored successfully.
 Use Previous/Next buttons to navigate pages.
 
-
-Previous/Next
